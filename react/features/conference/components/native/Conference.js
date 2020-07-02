@@ -1,48 +1,49 @@
 // @flow
 
-import React from 'react';
-import { NativeModules, SafeAreaView, StatusBar } from 'react-native';
-import LinearGradient from 'react-native-linear-gradient';
+import React from "react";
+import { NativeModules, SafeAreaView, StatusBar } from "react-native";
+import LinearGradient from "react-native-linear-gradient";
 
-import { appNavigate } from '../../../app/actions';
-import { PIP_ENABLED, getFeatureFlag } from '../../../base/flags';
-import { Container, LoadingIndicator, TintedView } from '../../../base/react';
-import { connect } from '../../../base/redux';
-import { ASPECT_RATIO_NARROW } from '../../../base/responsive-ui/constants';
-import { TestConnectionInfo } from '../../../base/testing';
-import { ConferenceNotification, isCalendarEnabled } from '../../../calendar-sync';
-import { Chat } from '../../../chat';
-import { DisplayNameLabel } from '../../../display-name';
-import { SharedDocument } from '../../../etherpad';
+import { appNavigate } from "../../../app/actions";
+import { PIP_ENABLED, getFeatureFlag } from "../../../base/flags";
+import { Container, LoadingIndicator, TintedView } from "../../../base/react";
+import { connect } from "../../../base/redux";
+import { ASPECT_RATIO_NARROW } from "../../../base/responsive-ui/constants";
+import { TestConnectionInfo } from "../../../base/testing";
+import {
+    ConferenceNotification,
+    isCalendarEnabled,
+} from "../../../calendar-sync";
+import { Chat } from "../../../chat";
+import { DisplayNameLabel } from "../../../display-name";
+import { SharedDocument } from "../../../etherpad";
 import {
     FILMSTRIP_SIZE,
     Filmstrip,
     isFilmstripVisible,
-    TileView
-} from '../../../filmstrip';
-import { AddPeopleDialog, CalleeInfoContainer } from '../../../invite';
-import { LargeVideo } from '../../../large-video';
-import { KnockingParticipantList } from '../../../lobby';
-import { BackButtonRegistry } from '../../../mobile/back-button';
-import { Captions } from '../../../subtitles';
-import { isToolboxVisible, setToolboxVisible, Toolbox } from '../../../toolbox';
+    TileView,
+} from "../../../filmstrip";
+import { AddPeopleDialog, CalleeInfoContainer } from "../../../invite";
+import { LargeVideo } from "../../../large-video";
+import { KnockingParticipantList } from "../../../lobby";
+import { BackButtonRegistry } from "../../../mobile/back-button";
+import { Captions } from "../../../subtitles";
+import { isToolboxVisible, setToolboxVisible, Toolbox } from "../../../toolbox";
 import {
     AbstractConference,
-    abstractMapStateToProps
-} from '../AbstractConference';
-import type { AbstractProps } from '../AbstractConference';
+    abstractMapStateToProps,
+} from "../AbstractConference";
+import type { AbstractProps } from "../AbstractConference";
 
-import Labels from './Labels';
-import LonelyMeetingExperience from './LonelyMeetingExperience';
-import NavigationBar from './NavigationBar';
-import styles, { NAVBAR_GRADIENT_COLORS } from './styles';
-
+import Labels from "./Labels";
+import LonelyMeetingExperience from "./LonelyMeetingExperience";
+import NavigationBar from "./NavigationBar";
+import styles, { NAVBAR_GRADIENT_COLORS } from "./styles";
 
 /**
  * The type of the React {@code Component} props of {@link Conference}.
  */
 type Props = AbstractProps & {
-
     /**
      * Application's aspect ratio.
      */
@@ -90,7 +91,7 @@ type Props = AbstractProps & {
     /**
      * The redux {@code dispatch} function.
      */
-    dispatch: Function
+    dispatch: Function,
 };
 
 /**
@@ -144,12 +145,13 @@ class Conference extends AbstractConference<Props, *> {
      */
     render() {
         return (
-            <Container style = { styles.conference }>
+            <Container style={styles.conference}>
                 <StatusBar
-                    barStyle = 'light-content'
-                    hidden = { true }
-                    translucent = { true } />
-                { this._renderContent() }
+                    barStyle="light-content"
+                    hidden={true}
+                    translucent={true}
+                />
+                {this._renderContent()}
             </Container>
         );
     }
@@ -183,7 +185,7 @@ class Conference extends AbstractConference<Props, *> {
 
             p = PictureInPicture.enterPictureInPicture();
         } else {
-            p = Promise.reject(new Error('PiP not enabled'));
+            p = Promise.reject(new Error("PiP not enabled"));
         }
 
         p.catch(() => {
@@ -200,9 +202,9 @@ class Conference extends AbstractConference<Props, *> {
      */
     _renderConferenceModals() {
         return [
-            <AddPeopleDialog key = 'addPeopleDialog' />,
-            <Chat key = 'chat' />,
-            <SharedDocument key = 'sharedDocument' />
+            <AddPeopleDialog key="addPeopleDialog" />,
+            <Chat key="chat" />,
+            <SharedDocument key="sharedDocument" />,
         ];
     }
 
@@ -215,10 +217,9 @@ class Conference extends AbstractConference<Props, *> {
     _renderConferenceNotification() {
         const { _calendarEnabled, _reducedUI } = this.props;
 
-        return (
-            _calendarEnabled && !_reducedUI
-                ? <ConferenceNotification />
-                : undefined);
+        return _calendarEnabled && !_reducedUI ? (
+            <ConferenceNotification />
+        ) : undefined;
     }
 
     /**
@@ -235,11 +236,13 @@ class Conference extends AbstractConference<Props, *> {
             _largeVideoParticipantId,
             _reducedUI,
             _shouldDisplayTileView,
-            _toolboxVisible
+            _toolboxVisible,
         } = this.props;
         const showGradient = _toolboxVisible;
-        const applyGradientStretching
-            = _filmstripVisible && _aspectRatio === ASPECT_RATIO_NARROW && !_shouldDisplayTileView;
+        const applyGradientStretching =
+            _filmstripVisible &&
+            _aspectRatio === ASPECT_RATIO_NARROW &&
+            !_shouldDisplayTileView;
 
         if (_reducedUI) {
             return this._renderContentForReducedUi();
@@ -247,88 +250,105 @@ class Conference extends AbstractConference<Props, *> {
 
         return (
             <>
-                {/*
-                  * The LargeVideo is the lowermost stacking layer.
-                  */
-                    _shouldDisplayTileView
-                        ? <TileView onClick = { this._onClick } />
-                        : <LargeVideo onClick = { this._onClick } />
+                {
+                    /*
+                     * The LargeVideo is the lowermost stacking layer.
+                     */
+                    _shouldDisplayTileView ? (
+                        <TileView onClick={this._onClick} />
+                    ) : (
+                        <LargeVideo onClick={this._onClick} />
+                    )
                 }
 
-                {/*
-                  * If there is a ringing call, show the callee's info.
-                  */
+                {
+                    /*
+                     * If there is a ringing call, show the callee's info.
+                     */
                     <CalleeInfoContainer />
                 }
 
-                {/*
-                  * The activity/loading indicator goes above everything, except
-                  * the toolbox/toolbars and the dialogs.
-                  */
-                    _connecting
-                        && <TintedView>
+                {
+                    /*
+                     * The activity/loading indicator goes above everything, except
+                     * the toolbox/toolbars and the dialogs.
+                     */
+                    _connecting && (
+                        <TintedView>
                             <LoadingIndicator />
                         </TintedView>
+                    )
                 }
 
                 <SafeAreaView
-                    pointerEvents = 'box-none'
-                    style = { styles.toolboxAndFilmstripContainer }>
-
-                    { showGradient && <LinearGradient
-                        colors = { NAVBAR_GRADIENT_COLORS }
-                        end = {{
-                            x: 0.0,
-                            y: 0.0
-                        }}
-                        pointerEvents = 'none'
-                        start = {{
-                            x: 0.0,
-                            y: 1.0
-                        }}
-                        style = { [
-                            styles.bottomGradient,
-                            applyGradientStretching ? styles.gradientStretchBottom : undefined
-                        ] } />}
+                    pointerEvents="box-none"
+                    style={styles.toolboxAndFilmstripContainer}
+                >
+                    {showGradient && (
+                        <LinearGradient
+                            colors={NAVBAR_GRADIENT_COLORS}
+                            end={{
+                                x: 0.0,
+                                y: 0.0,
+                            }}
+                            pointerEvents="none"
+                            start={{
+                                x: 0.0,
+                                y: 1.0,
+                            }}
+                            style={[
+                                styles.bottomGradient,
+                                applyGradientStretching
+                                    ? styles.gradientStretchBottom
+                                    : undefined,
+                            ]}
+                        />
+                    )}
 
                     <Labels />
 
-                    <Captions onPress = { this._onClick } />
+                    <Captions onPress={this._onClick} />
 
-                    { _shouldDisplayTileView || <DisplayNameLabel participantId = { _largeVideoParticipantId } /> }
+                    {_shouldDisplayTileView || (
+                        <DisplayNameLabel
+                            participantId={_largeVideoParticipantId}
+                        />
+                    )}
 
-                    <LonelyMeetingExperience />
+                    {/* <LonelyMeetingExperience /> */}
 
                     {/*
-                      * The Toolbox is in a stacking layer below the Filmstrip.
-                      */}
+                     * The Toolbox is in a stacking layer below the Filmstrip.
+                     */}
                     <Toolbox />
 
-                    {/*
-                      * The Filmstrip is in a stacking layer above the
-                      * LargeVideo. The LargeVideo and the Filmstrip form what
-                      * the Web/React app calls "videospace". Presumably, the
-                      * name and grouping stem from the fact that these two
-                      * React Components depict the videos of the conference's
-                      * participants.
-                      */
+                    {
+                        /*
+                         * The Filmstrip is in a stacking layer above the
+                         * LargeVideo. The LargeVideo and the Filmstrip form what
+                         * the Web/React app calls "videospace". Presumably, the
+                         * name and grouping stem from the fact that these two
+                         * React Components depict the videos of the conference's
+                         * participants.
+                         */
                         _shouldDisplayTileView ? undefined : <Filmstrip />
                     }
                 </SafeAreaView>
 
                 <SafeAreaView
-                    pointerEvents = 'box-none'
-                    style = { styles.navBarSafeView }>
+                    pointerEvents="box-none"
+                    style={styles.navBarSafeView}
+                >
                     <NavigationBar />
-                    { this._renderNotificationsContainer() }
+                    {this._renderNotificationsContainer()}
                     <KnockingParticipantList />
                 </SafeAreaView>
 
                 <TestConnectionInfo />
 
-                { this._renderConferenceNotification() }
+                {this._renderConferenceNotification()}
 
-                { this._renderConferenceModals() }
+                {this._renderConferenceModals()}
             </>
         );
     }
@@ -344,14 +364,13 @@ class Conference extends AbstractConference<Props, *> {
 
         return (
             <>
-                <LargeVideo onClick = { this._onClick } />
+                <LargeVideo onClick={this._onClick} />
 
-                {
-                    _connecting
-                        && <TintedView>
-                            <LoadingIndicator />
-                        </TintedView>
-                }
+                {_connecting && (
+                    <TintedView>
+                        <LoadingIndicator />
+                    </TintedView>
+                )}
             </>
         );
     }
@@ -382,11 +401,9 @@ class Conference extends AbstractConference<Props, *> {
             notificationsStyle.marginRight = FILMSTRIP_SIZE;
         }
 
-        return super.renderNotificationsContainer(
-            {
-                style: notificationsStyle
-            }
-        );
+        return super.renderNotificationsContainer({
+            style: notificationsStyle,
+        });
     }
 
     _setToolboxVisible: (boolean) => void;
@@ -412,14 +429,11 @@ class Conference extends AbstractConference<Props, *> {
  * @returns {Props}
  */
 function _mapStateToProps(state) {
-    const { connecting, connection } = state['features/base/connection'];
-    const {
-        conference,
-        joining,
-        membersOnly,
-        leaving
-    } = state['features/base/conference'];
-    const { aspectRatio, reducedUI } = state['features/base/responsive-ui'];
+    const { connecting, connection } = state["features/base/connection"];
+    const { conference, joining, membersOnly, leaving } = state[
+        "features/base/conference"
+    ];
+    const { aspectRatio, reducedUI } = state["features/base/responsive-ui"];
 
     // XXX There is a window of time between the successful establishment of the
     // XMPP connection and the subsequent commencement of joining the MUC during
@@ -430,8 +444,9 @@ function _mapStateToProps(state) {
     // - the XMPP connection is connected and the conference is joining, or
     // - the XMPP connection is connected and we have no conference yet, nor we
     //   are leaving one.
-    const connecting_
-        = connecting || (connection && (!membersOnly && (joining || (!conference && !leaving))));
+    const connecting_ =
+        connecting ||
+        (connection && !membersOnly && (joining || (!conference && !leaving)));
 
     return {
         ...abstractMapStateToProps(state),
@@ -439,10 +454,10 @@ function _mapStateToProps(state) {
         _calendarEnabled: isCalendarEnabled(state),
         _connecting: Boolean(connecting_),
         _filmstripVisible: isFilmstripVisible(state),
-        _largeVideoParticipantId: state['features/large-video'].participantId,
+        _largeVideoParticipantId: state["features/large-video"].participantId,
         _pictureInPictureEnabled: getFeatureFlag(state, PIP_ENABLED),
         _reducedUI: reducedUI,
-        _toolboxVisible: isToolboxVisible(state)
+        _toolboxVisible: isToolboxVisible(state),
     };
 }
 
