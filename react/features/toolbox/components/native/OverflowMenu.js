@@ -1,36 +1,35 @@
 // @flow
 
-import React, { PureComponent } from 'react';
-import { TouchableOpacity, View } from 'react-native';
-import Collapsible from 'react-native-collapsible';
+import React, { PureComponent } from "react";
+import { TouchableOpacity, View } from "react-native";
+import Collapsible from "react-native-collapsible";
 
-import { ColorSchemeRegistry } from '../../../base/color-scheme';
-import { BottomSheet, hideDialog, isDialogOpen } from '../../../base/dialog';
-import { IconDragHandle } from '../../../base/icons';
-import { connect } from '../../../base/redux';
-import { StyleType } from '../../../base/styles';
-import { SharedDocumentButton } from '../../../etherpad';
-import { InviteButton } from '../../../invite';
-import { LobbyModeButton } from '../../../lobby/components/native';
-import { AudioRouteButton } from '../../../mobile/audio-mode';
-import { LiveStreamButton, RecordButton } from '../../../recording';
-import { RoomLockButton } from '../../../room-lock';
-import { ClosedCaptionButton } from '../../../subtitles';
-import { TileViewButton } from '../../../video-layout';
-import { VideoShareButton } from '../../../youtube-player';
-import HelpButton from '../HelpButton';
+import { ColorSchemeRegistry } from "../../../base/color-scheme";
+import { BottomSheet, hideDialog, isDialogOpen } from "../../../base/dialog";
+import { IconDragHandle } from "../../../base/icons";
+import { connect } from "../../../base/redux";
+import { StyleType } from "../../../base/styles";
+import { SharedDocumentButton } from "../../../etherpad";
+import { InviteButton } from "../../../invite";
+import { LobbyModeButton } from "../../../lobby/components/native";
+import { AudioRouteButton } from "../../../mobile/audio-mode";
+import { LiveStreamButton, RecordButton } from "../../../recording";
+import { RoomLockButton } from "../../../room-lock";
+import { ClosedCaptionButton } from "../../../subtitles";
+import { TileViewButton } from "../../../video-layout";
+import { VideoShareButton } from "../../../youtube-player";
+import HelpButton from "../HelpButton";
 
-import AudioOnlyButton from './AudioOnlyButton';
-import MoreOptionsButton from './MoreOptionsButton';
-import RaiseHandButton from './RaiseHandButton';
-import ToggleCameraButton from './ToggleCameraButton';
-import styles from './styles';
+import AudioOnlyButton from "./AudioOnlyButton";
+import MoreOptionsButton from "./MoreOptionsButton";
+import RaiseHandButton from "./RaiseHandButton";
+import ToggleCameraButton from "./ToggleCameraButton";
+import styles from "./styles";
 
 /**
  * The type of the React {@code Component} props of {@link OverflowMenu}.
  */
 type Props = {
-
     /**
      * The color-schemed stylesheet of the dialog feature.
      */
@@ -49,11 +48,10 @@ type Props = {
     /**
      * Used for hiding the dialog when the selection was completed.
      */
-    dispatch: Function
+    dispatch: Function,
 };
 
 type State = {
-
     /**
      * True if the bottom scheet is scrolled to the top.
      */
@@ -62,8 +60,8 @@ type State = {
     /**
      * True if the 'more' button set needas to be rendered.
      */
-    showMore: boolean
-}
+    showMore: boolean,
+};
 
 /**
  * The exported React {@code Component}. We need it to execute
@@ -89,7 +87,7 @@ class OverflowMenu extends PureComponent<Props, State> {
 
         this.state = {
             scrolledToTop: true,
-            showMore: false
+            showMore: false,
         };
 
         // Bind event handlers so they are only bound once per instance.
@@ -112,36 +110,37 @@ class OverflowMenu extends PureComponent<Props, State> {
         const buttonProps = {
             afterClick: this._onCancel,
             showLabel: true,
-            styles: _bottomSheetStyles.buttons
+            styles: _bottomSheetStyles.buttons,
         };
 
         const moreOptionsButtonProps = {
             ...buttonProps,
             afterClick: this._onToggleMenu,
-            visible: !showMore
+            visible: !showMore,
         };
 
         return (
             <BottomSheet
-                onCancel = { this._onCancel }
-                onSwipe = { this._onSwipe }
-                renderHeader = { this._renderMenuExpandToggle }>
-                <AudioRouteButton { ...buttonProps } />
-                <InviteButton { ...buttonProps } />
-                <AudioOnlyButton { ...buttonProps } />
-                <RaiseHandButton { ...buttonProps } />
-                <LobbyModeButton { ...buttonProps } />
-                <MoreOptionsButton { ...moreOptionsButtonProps } />
-                <Collapsible collapsed = { !showMore }>
-                    <ToggleCameraButton { ...buttonProps } />
-                    <TileViewButton { ...buttonProps } />
-                    <RecordButton { ...buttonProps } />
-                    <LiveStreamButton { ...buttonProps } />
-                    <VideoShareButton { ...buttonProps } />
-                    <RoomLockButton { ...buttonProps } />
-                    <ClosedCaptionButton { ...buttonProps } />
-                    <SharedDocumentButton { ...buttonProps } />
-                    <HelpButton { ...buttonProps } />
+                onCancel={this._onCancel}
+                onSwipe={this._onSwipe}
+                renderHeader={this._renderMenuExpandToggle}
+            >
+                <AudioRouteButton {...buttonProps} />
+                {/* <InviteButton { ...buttonProps } /> */}
+                <AudioOnlyButton {...buttonProps} />
+                <RaiseHandButton {...buttonProps} />
+                <LobbyModeButton {...buttonProps} />
+                <MoreOptionsButton {...moreOptionsButtonProps} />
+                <Collapsible collapsed={!showMore}>
+                    <ToggleCameraButton {...buttonProps} />
+                    <TileViewButton {...buttonProps} />
+                    {/* <RecordButton { ...buttonProps } /> */}
+                    {/* <LiveStreamButton { ...buttonProps } /> */}
+                    <VideoShareButton {...buttonProps} />
+                    <RoomLockButton {...buttonProps} />
+                    <ClosedCaptionButton {...buttonProps} />
+                    <SharedDocumentButton {...buttonProps} />
+                    <HelpButton {...buttonProps} />
                 </Collapsible>
             </BottomSheet>
         );
@@ -157,13 +156,16 @@ class OverflowMenu extends PureComponent<Props, State> {
     _renderMenuExpandToggle() {
         return (
             <View
-                style = { [
+                style={[
                     this.props._bottomSheetStyles.sheet,
-                    styles.expandMenuContainer
-                ] }>
-                <TouchableOpacity onPress = { this._onToggleMenu }>
-                    { /* $FlowFixMeProps */ }
-                    <IconDragHandle style = { this.props._bottomSheetStyles.expandIcon } />
+                    styles.expandMenuContainer,
+                ]}
+            >
+                <TouchableOpacity onPress={this._onToggleMenu}>
+                    {/* $FlowFixMeProps */}
+                    <IconDragHandle
+                        style={this.props._bottomSheetStyles.expandIcon}
+                    />
                 </TouchableOpacity>
             </View>
         );
@@ -187,7 +189,7 @@ class OverflowMenu extends PureComponent<Props, State> {
         return false;
     }
 
-    _onSwipe: string => void;
+    _onSwipe: (string) => void;
 
     /**
      * Callback to be invoked when swipe gesture is detected on the menu. Returns true
@@ -200,18 +202,20 @@ class OverflowMenu extends PureComponent<Props, State> {
         const { showMore } = this.state;
 
         switch (direction) {
-        case 'up':
-            !showMore && this.setState({
-                showMore: true
-            });
+            case "up":
+                !showMore &&
+                    this.setState({
+                        showMore: true,
+                    });
 
-            return !showMore;
-        case 'down':
-            showMore && this.setState({
-                showMore: false
-            });
+                return !showMore;
+            case "down":
+                showMore &&
+                    this.setState({
+                        showMore: false,
+                    });
 
-            return showMore;
+                return showMore;
         }
     }
 
@@ -224,7 +228,7 @@ class OverflowMenu extends PureComponent<Props, State> {
      */
     _onToggleMenu() {
         this.setState({
-            showMore: !this.state.showMore
+            showMore: !this.state.showMore,
         });
     }
 }
@@ -238,8 +242,8 @@ class OverflowMenu extends PureComponent<Props, State> {
  */
 function _mapStateToProps(state) {
     return {
-        _bottomSheetStyles: ColorSchemeRegistry.get(state, 'BottomSheet'),
-        _isOpen: isDialogOpen(state, OverflowMenu_)
+        _bottomSheetStyles: ColorSchemeRegistry.get(state, "BottomSheet"),
+        _isOpen: isDialogOpen(state, OverflowMenu_),
     };
 }
 
