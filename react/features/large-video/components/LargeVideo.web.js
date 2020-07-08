@@ -6,7 +6,6 @@ import { Watermarks } from "../../base/react";
 import { connect } from "../../base/redux";
 import { fetchCustomBrandingData } from "../../dynamic-branding";
 import { Captions } from "../../subtitles/";
-import { nodeName } from "jquery";
 
 declare var interfaceConfig: Object;
 
@@ -94,14 +93,6 @@ class LargeVideo extends Component<Props> {
                             id="largeVideo"
                             muted={true}
                             playsInline={true} /* for Safari on iOS to work */
-                            ref={(element) => {
-                                if (element)
-                                    element.style.setProperty(
-                                        "transform",
-                                        "none",
-                                        "important"
-                                    );
-                            }}
                         />
                     </div>
                 </div>
